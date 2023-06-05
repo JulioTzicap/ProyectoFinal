@@ -104,7 +104,7 @@ def generar_tablero():
 
     # Crea una nueva ventana para el juego
     ventana_juego = tk.Tk()
-
+    ventana_juego.title("Juego de Matríz Arirmetica")
     botones = []
     for i in range(n):
         fila = []
@@ -178,8 +178,8 @@ def generar_tablero():
 
 # Crea la ventana principal
 ventana = tk.Tk()
-ventana.title("Generador de tablero")
-ventana.geometry("300x200")
+ventana.title("Menu de inicio")
+ventana.geometry("500x500")
 
 # Etiqueta y campo de entrada para el tamaño del tablero
 label = tk.Label(ventana, text="Tamaño del tablero:")
