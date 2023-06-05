@@ -2,6 +2,7 @@ import tkinter as tk
 from tkinter import messagebox
 import random
 
+
 def generar_tablero():
     # Obtiene los valores ingresados por el usuario
     n = int(entry.get())
