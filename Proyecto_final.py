@@ -67,6 +67,9 @@ def generar_tablero():
         # Actualiza el texto del botón con el número correspondiente
         botones[i][j].config(text=str(tablero[i][j]))
 
+        # Deshabilita el botón
+        botones[i][j].config(state="disabled")
+
         # Revela los números vecinos
         for x in range(max(0, i-1), min(n, i+2)):
             for y in range(max(0, j-1), min(n, j+2)):
@@ -88,8 +91,6 @@ def generar_tablero():
             boton_respuesta = tk.Button(frame_botones, text=str(opcion), width=5, height=2,
                                     command=lambda opcion=opcion: verificar_respuesta(opcion, opciones))
             boton_respuesta.grid(row=i, column=0)
-
-
     # Crea una nueva ventana para el juego
     ventana_juego = tk.Tk()
 
