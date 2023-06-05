@@ -5,6 +5,9 @@ import random
 def generar_tablero():
     # Obtiene los valores ingresados por el usuario
     n = int(entry.get())
+    if n < 3:
+        messagebox.showerror("Error", "El tamaño del tablero debe ser mayor o igual a 3")
+        return
     jugador1 = entry_jugador1.get()
     jugador2 = entry_jugador2.get()
     participaciones = int(entry_participaciones.get())
