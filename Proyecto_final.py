@@ -66,6 +66,7 @@ def generar_tablero():
 
         # Actualiza el texto del botón con el número correspondiente
         botones[i][j].config(text=str(tablero[i][j]))
+        botones[i][j].config(state=tk.DISABLED)  # Desactiva el botón
 
         # Revela los números vecinos
         for x in range(max(0, i-1), min(n, i+2)):
