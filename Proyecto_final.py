@@ -67,9 +67,6 @@ def generar_tablero():
         # Actualiza el texto del botón con el número correspondiente
         botones[i][j].config(text=str(tablero[i][j]))
 
-        # Deshabilita el botón
-        botones[i][j].config(state="disabled")
-
         # Revela los números vecinos
         for x in range(max(0, i-1), min(n, i+2)):
             for y in range(max(0, j-1), min(n, j+2)):
@@ -80,7 +77,9 @@ def generar_tablero():
         sumatoria = sum(vecinos)
         multiplicacion = sumatoria * tablero[i][j]
         opciones = [random.randint(0, 1000) for _ in range(3)] + [multiplicacion]
-        random.shuffle(opciones)
+
+        # Selecciona aleatoriamente la posición del botón con la respuesta correcta
+        posicion_respuesta_correcta = random.choice(range(4))
 
         # Elimina los botones de respuesta existentes
         for widget in frame_botones.grid_slaves():
@@ -88,9 +87,17 @@ def generar_tablero():
 
         # Crea los botones de respuesta
         for i, opcion in enumerate(opciones):
-            boton_respuesta = tk.Button(frame_botones, text=str(opcion), width=5, height=2,
-                                    command=lambda opcion=opcion: verificar_respuesta(opcion, opciones))
+            if i == posicion_respuesta_correcta:
+                # Crea el botón con la respuesta correcta
+                boton_respuesta = tk.Button(frame_botones, text=str(opcion), width=5, height=2,
+                                            command=lambda opcion=opcion: verificar_respuesta(opcion, opciones))
+            else:
+                # Crea los botones con las otras opciones
+                boton_respuesta = tk.Button(frame_botones, text=str(opcion), width=5, height=2,
+                                            command=lambda opcion=opcion: verificar_respuesta(opcion, opciones))
             boton_respuesta.grid(row=i, column=0)
+
+
     # Crea una nueva ventana para el juego
     ventana_juego = tk.Tk()
 
@@ -145,57 +152,50 @@ def generar_tablero():
                 for widget in frame_botones.grid_slaves():
                     widget.destroy()
 
-                # Verifica si se han completado todas las participaciones
-                if participacion_actual == participaciones:
-                    mostrar_ganador()
-                else:
-                    participacion_actual += 1
-
-            ventana_juego.after(1000, actualizar_cronometro)
-
     def reiniciar_cronometro():
         cronometro.set(25)
         cronometro_activo.set(False)
-        label_cronometro.config(text="Tiempo restante: 25 segundos")
+
+    ventana_juego.after(1000, actualizar_cronometro)
 
     def mostrar_ganador():
-        ganador = max(puntajes, key=puntajes.get)
-        mensaje_ganador = f"¡{jugador1} y {jugador2} han completado {participaciones} participaciones!\n"
-        mensaje_ganador += f"El ganador es {jugador1} con {puntajes[1]} puntos." if ganador == 1 else f"El ganador es {jugador2} con {puntajes[2]} puntos."
-        messagebox.showinfo("Juego Finalizado", mensaje_ganador)
-        ventana_juego.destroy()
+        ganador = jugador1 if puntajes[1] > puntajes[2] else jugador2 if puntajes[2] > puntajes[1] else "Nadie"
+        messagebox.showinfo("Juego Terminado", f"El ganador es {ganador}!")
 
     ventana_juego.mainloop()
 
+
 # Crea la ventana principal
 ventana = tk.Tk()
+ventana.title("Generador de tablero")
+ventana.geometry("300x200")
 
-# Etiqueta y campo de entrada para el tamaño de la matriz
-label_tamano = tk.Label(ventana, text="Tamaño del tablero (N >= 3): ")
-label_tamano.pack()
+# Etiqueta y campo de entrada para el tamaño del tablero
+label = tk.Label(ventana, text="Tamaño del tablero:")
+label.pack()
 entry = tk.Entry(ventana)
 entry.pack()
 
-# Etiquetas y campos de entrada para los nombres de los jugadores
-label_jugador1 = tk.Label(ventana, text="Nombre del jugador 1: ")
+# Etiqueta y campo de entrada para el nombre de los jugadores
+label_jugador1 = tk.Label(ventana, text="Nombre del jugador 1:")
 label_jugador1.pack()
 entry_jugador1 = tk.Entry(ventana)
 entry_jugador1.pack()
 
-label_jugador2 = tk.Label(ventana, text="Nombre del jugador 2: ")
+label_jugador2 = tk.Label(ventana, text="Nombre del jugador 2:")
 label_jugador2.pack()
 entry_jugador2 = tk.Entry(ventana)
 entry_jugador2.pack()
 
 # Etiqueta y campo de entrada para la cantidad de participaciones
-label_participaciones = tk.Label(ventana, text="Cantidad de participaciones: ")
+label_participaciones = tk.Label(ventana, text="Cantidad de participaciones:")
 label_participaciones.pack()
 entry_participaciones = tk.Entry(ventana)
 entry_participaciones.pack()
 
 # Botón para generar el tablero
-boton_generar = tk.Button(ventana, text="Generar tablero", command=generar_tablero)
+boton_generar = tk.Button(ventana, text="Generar Tablero", command=generar_tablero)
 boton_generar.pack()
 
-# Ejecuta el bucle principal de la ventana principal
+# Ejecuta el bucle de eventos de la ventana principal
 ventana.mainloop()
