@@ -171,7 +171,7 @@ def generar_tablero():
 
     def mostrar_ganador():
         ganador = jugador1 if puntajes[1] > puntajes[2] else jugador2 if puntajes[2] > puntajes[1] else "... Wow, el resultado es un empate, felicidades a ambos jugadores"
-        messagebox.showinfo("Juego Terminado", f"El ganador es {ganador}!")
+        messagebox.showinfo("Juego Terminado", f"¡El ganador es {ganador}!")
 
     ventana_juego.mainloop()
 
